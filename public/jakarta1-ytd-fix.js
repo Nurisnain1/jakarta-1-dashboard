@@ -20,5 +20,6 @@
  }
  let raf=0;const schedule=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;apply()})};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+ window.addEventListener('jakarta1-yoy-filter-updated',()=>setTimeout(apply,0));
  new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
 })();
