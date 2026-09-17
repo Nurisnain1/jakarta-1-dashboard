@@ -11,7 +11,21 @@ const emptyFocus=():Focus=>({iphone17promax:0,iphone17pro:0,iphone17:0,iphone15:
 const add=(a:Focus,b:Focus)=>{(Object.keys(a) as (keyof Focus)[]).forEach(k=>a[k]+=b[k])};
 function n(v:unknown){if(typeof v==="number")return Number.isFinite(v)?v:0;const x=Number(String(v??"").replace(/[^0-9.-]/g,""));return Number.isFinite(x)?x:0}
 function dateKey(v:unknown){if(typeof v==="number"&&v>20000){const d=new Date(Date.UTC(1899,11,30)+v*86400000);return d.toISOString().slice(0,10)}const s=String(v??"").trim();let m=s.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);if(m)return`${m[3]}-${m[2]}-${m[1]}`;m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}-${m[2]}-${m[3]}`:""}
-function focusOf(desc:string,qty:number){const f=emptyFocus(),q=Math.max(0,qty),d=desc.toUpperCase().replace(/\s+/g," ");if(/IPHONE 17 PRO\s*MAX|IPHONE 17 PROMAX/.test(d))f.iphone17promax+=q;else if(/IPHONE 17 PRO/.test(d))f.iphone17pro+=q;else if(/IPHONE 17(?!\s*(PRO|AIR))/.test(d))f.iphone17+=q;if(/IPHONE 15/.test(d))f.iphone15+=q;if(/IPHONE 16/.test(d))f.iphone16+=q;if(/IPHONE\s+AIR/.test(d))f.iphoneAir+=q;if(/MACBOOK AIR/.test(d)&&/M5/.test(d))f.macbookAirM5+=q;if(/MACBOOK NEO/.test(d))f.macbookNeo+=q;if(/IPAD\s+11/.test(d))f.ipad11+=q;if(/(APPLE\s+WATCH|AW).*SE\s*3|WATCH\s+SE\s*3/.test(d))f.awSe3+=q;return f}
+function focusOf(row:Row,qty:number){
+ const f=emptyFocus(),q=Math.max(0,qty);
+ const category=String(row[6]??"").trim().toUpperCase().replace(/\s+/g," ");
+ const type=String(row[7]??"").trim().toUpperCase().replace(/\s+/g," ");
+ const desc=String(row[10]??"").trim().toUpperCase().replace(/\s+/g," ");
+ // Daily Summary focus follows Data Compile dimensions: iPhone/iPad/MBN from Type, Apple Watch from Product Category.
+ if(type==="IPHONE 15"||type.startsWith("IPHONE 15 "))f.iphone15+=q;
+ if(type==="MBN 13\""||type==="MBN 13”"||type==="MBN 13"||type.startsWith("MBN 13 "))f.macbookNeo+=q;
+ if(type==="IPAD 11"||type.startsWith("IPAD 11 "))f.ipad11+=q;
+ if(category==="APPLE WATCH"||category.startsWith("APPLE WATCH "))f.awSe3+=q;
+ // Keep legacy fields for other consumers of this API, still based on product description.
+ if(/IPHONE 17 PRO\s*MAX|IPHONE 17 PROMAX/.test(desc))f.iphone17promax+=q;else if(/IPHONE 17 PRO/.test(desc))f.iphone17pro+=q;else if(/IPHONE 17(?!\s*(PRO|AIR))/.test(desc))f.iphone17+=q;
+ if(/IPHONE 16/.test(desc))f.iphone16+=q;if(/IPHONE\s+AIR/.test(desc))f.iphoneAir+=q;if(/MACBOOK AIR/.test(desc)&&/M5/.test(desc))f.macbookAirM5+=q;
+ return f
+}
 function hasFocus(f:Focus){return Object.values(f).some(v=>v!==0)}
 
 export async function GET(req:NextRequest){
@@ -26,7 +40,7 @@ export async function GET(req:NextRequest){
    const store=STORE_CODES[i],rows=(data[i]??[]) as Row[];
    for(const row of rows.slice(1)){
     const date=dateKey(row[1]);if(!date.startsWith(period))continue;
-    const qty=n(row[11]),f=focusOf(String(row[10]??""),qty);if(!hasFocus(f))continue;
+    const qty=n(row[11]),f=focusOf(row,qty);if(!hasFocus(f))continue;
     const staffId=String(row[4]??"").replace(/\.0$/,"").trim()||"UNKNOWN",staffName=String(row[5]??"").trim()||"Unknown";
     const k=`${date}|${store}|${staffId}`,cur=map.get(k)??{date,store,staffId,staffName,focus:emptyFocus()};add(cur.focus,f);map.set(k,cur);
    }
