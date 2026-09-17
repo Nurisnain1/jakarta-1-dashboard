@@ -7,17 +7,18 @@
     const s=document.createElement('style');
     s.id=STYLE_ID;
     s.textContent=`
-      html{width:100%;overflow-x:hidden;scroll-behavior:auto!important;overscroll-behavior-x:none}
-      body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
-      main{min-width:0;max-width:100%;overflow-x:clip}
+      html{width:100%;height:100%;overflow:hidden;scroll-behavior:auto!important;overscroll-behavior:none}
+      body{width:100%;height:100%;max-width:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+      body>div:first-child,#__next{width:100%;height:100%;max-width:100%;overflow:hidden}
+      main{min-width:0;max-width:100%;height:100vh;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain;scroll-behavior:auto!important;position:relative}
       .j1-nav-group{padding:12px 12px 6px;font-size:10px;font-weight:900;letter-spacing:.16em;color:rgba(255,255,255,.55);text-transform:uppercase}
       #${MENU_ID}{display:none}
       #${BACKDROP_ID}{display:none}
-      .overflow-x-auto{max-width:100%;overflow-x:auto!important;overflow-y:hidden;overscroll-behavior-x:contain;scroll-behavior:auto!important;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}
+      .overflow-x-auto{width:100%;max-width:100%;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain;scroll-behavior:auto!important;-webkit-overflow-scrolling:touch}
       table{max-width:none}
       @media(max-width:1023px){
-        body.j1-menu-open{overflow:hidden}
-        body>div:first-child aside,#__next aside,aside{position:fixed!important;inset:0 auto 0 0!important;width:min(86vw,320px)!important;height:100dvh!important;z-index:80!important;overflow-y:auto!important;overscroll-behavior:contain;transform:translate3d(-105%,0,0);transition:transform .22s ease;box-shadow:0 20px 50px rgba(15,23,42,.28)}
+        body.j1-menu-open main{overflow:hidden!important}
+        body>div:first-child aside,#__next aside,aside{position:fixed!important;inset:0 auto 0 0!important;width:min(86vw,320px)!important;height:100dvh!important;z-index:80!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;transform:translate3d(-105%,0,0);transition:transform .22s ease;box-shadow:0 20px 50px rgba(15,23,42,.28)}
         body.j1-menu-open aside{transform:translate3d(0,0,0)}
         aside nav{display:block!important;padding:0 12px 24px!important}
         aside nav>button,aside nav>div>button{width:100%!important;justify-content:flex-start!important;min-height:44px!important}
@@ -36,8 +37,8 @@
         select,button{min-height:44px}
       }
       @media(min-width:1024px){
-        aside{position:sticky!important;top:0;height:100vh;max-height:100vh;overflow-y:auto;overscroll-behavior:contain;flex:0 0 auto}
-        main{min-width:0;flex:1 1 auto}
+        aside{position:relative!important;top:auto!important;height:100vh;max-height:100vh;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;flex:0 0 auto}
+        main{height:100vh;min-width:0;flex:1 1 auto}
       }
     `;
     document.head.appendChild(s);
