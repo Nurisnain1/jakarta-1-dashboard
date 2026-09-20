@@ -1,4 +1,5 @@
 (()=>{
+ const setHTML=(el,html)=>{const template=document.createElement('template');template.innerHTML=html;if(el.innerHTML!==template.innerHTML)el.innerHTML=template.innerHTML};
  const money=new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0});
  const pct=v=>`${new Intl.NumberFormat('id-ID',{maximumFractionDigits:1}).format(v)}%`;
  const val=s=>{const n=Number(String(s||'').replace(/[^0-9-]/g,''));return Number.isFinite(n)?n:0};
@@ -15,8 +16,8 @@
   if(!foot){foot=document.createElement('tfoot');foot.dataset.j1YtdTotal='1';table.append(foot)}
   const g=t25?(t26-t25)/t25*100:0,base=rows[0]?.querySelectorAll('td');
   const html=`<tr class="border-t-2 bg-blue-50 font-black"><td class="${base?.[0]?.className||''}">YTD s.d. ${cutDay} ${months[cutMonth]}</td><td class="${base?.[1]?.className||''}">${money.format(t25)}</td><td class="${base?.[2]?.className||''}">${money.format(t26)}</td><td class="${base?.[3]?.className||''}">${t25?pct(g):'—'}</td></tr>`;
-  if(foot.innerHTML!==html)foot.innerHTML=html;
-  const p=section.querySelector('h3 + p');if(p)p.textContent=`Year to Date 2025 vs 2026 sampai ${cutDay} ${months[cutMonth]}. Bulan setelah periode berjalan tidak ditampilkan.`;
+  setHTML(foot,html);
+  const p=section.querySelector('h3 + p');const label=`Year to Date 2025 vs 2026 sampai ${cutDay} ${months[cutMonth]}. Bulan setelah periode berjalan tidak ditampilkan.`;if(p&&p.textContent!==label)p.textContent=label;
  }
  let raf=0;const schedule=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;apply()})};
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
