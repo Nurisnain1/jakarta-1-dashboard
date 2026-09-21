@@ -2,7 +2,7 @@ import {NextRequest,NextResponse} from "next/server";
 import {getSheetRanges} from "@/lib/google-sheets";
 
 const SALES:Record<string,string>={"2025":"1NnRW70VyrtV8c89_M08gTnOGbtzeldSy8gL-gm4GjJ0","2026":"151Qfrz3RZnDMgZjKOPt5s_aS-zscSiOTCWodbUDWM1k"};
-const STORE_CODES=["M117","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
+const STORE_CODES=["M132","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
 type Row=unknown[];
 function n(v:unknown){if(typeof v==="number")return Number.isFinite(v)?v:0;const x=Number(String(v??"").replace(/[^0-9.-]/g,""));return Number.isFinite(x)?x:0}
 function dateKey(v:unknown){if(typeof v==="number"&&v>20000){const d=new Date(Date.UTC(1899,11,30)+v*86400000);return d.toISOString().slice(0,10)}const s=String(v??"").trim();let m=s.match(/^(\d{2})[-/](\d{2})[-/](\d{4})$/);if(m)return `${m[3]}-${m[2]}-${m[1]}`;m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[1]}-${m[2]}-${m[3]}`:""}
