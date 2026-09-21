@@ -5,7 +5,7 @@ const SALES:Record<string,string>={
   "2025":"1NnRW70VyrtV8c89_M08gTnOGbtzeldSy8gL-gm4GjJ0",
   "2026":"151Qfrz3RZnDMgZjKOPt5s_aS-zscSiOTCWodbUDWM1k"
 };
-const STORES=["M117","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
+const STORES=["M132","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
 const CACHE_MS=60_000;
 type Raw=unknown[];
 type TierKey="0"|"1"|"2"|"3"|"4";
