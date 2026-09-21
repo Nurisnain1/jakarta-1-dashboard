@@ -9,7 +9,7 @@ export async function GET(req:NextRequest){
 }
 import {getSheetRanges} from "@/lib/google-sheets";
 const SALES:Record<string,string>={"2025":"1NnRW70VyrtV8c89_M08gTnOGbtzeldSy8gL-gm4GjJ0","2026":"151Qfrz3RZnDMgZjKOPt5s_aS-zscSiOTCWodbUDWM1k"},MASTER="1BjLDXdi_5BgZCUUJAKba-xYRFf0RDmRTT0FW1be03WE";
-const STORES=["M117","M118","M124","M127","M217","M227","M238","M255","M264"],SUPPLIERS=["Medpoin","Hastag","Dino","IGA","iBacks","Handal","Omega","Torras"] as const;
+const STORES=["M132","M118","M124","M127","M217","M227","M238","M255","M264"],SUPPLIERS=["Medpoin","Hastag","Dino","IGA","iBacks","Handal","Omega","Torras"] as const;
 type Row=unknown[];type Supplier=typeof SUPPLIERS[number];type Metric={qty:number;value:number};
 const S=(v:unknown)=>String(v??"").trim(),U=(v:unknown)=>S(v).toUpperCase(),K=(v:unknown)=>U(v).replace(/[^A-Z0-9]/g,"");
 const n=(v:unknown)=>{if(typeof v==="number")return Number.isFinite(v)?v:0;const x=Number(S(v).replace(/\s/g,"").replace(/\.(?=\d{3}(?:\D|$))/g,"").replace(",",".").replace(/[^0-9.-]/g,""));return Number.isFinite(x)?x:0};
