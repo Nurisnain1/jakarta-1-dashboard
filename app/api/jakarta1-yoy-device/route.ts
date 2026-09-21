@@ -3,8 +3,8 @@ import {getSheetRanges} from "@/lib/google-sheets";
 import {GET as getJakarta1V2} from "@/app/api/jakarta1-v2/route";
 
 const SALES:Record<string,string>={"2025":"1NnRW70VyrtV8c89_M08gTnOGbtzeldSy8gL-gm4GjJ0","2026":"151Qfrz3RZnDMgZjKOPt5s_aS-zscSiOTCWodbUDWM1k"};
-const STORES=["M117","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
-const NAMES:Record<string,string>={M117:"Plaza Senayan",M118:"Pondok Indah Mall 3",M124:"Pacific Place",M127:"Lotte Avenue",M217:"Blok M Plaza",M227:"Aeon Tanjung Barat",M238:"Pondok Indah Mall 2",M255:"Antasari Place",M264:"Plaza Semanggi"};
+const STORES=["M132","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
+const NAMES:Record<string,string>={M132:"Plaza Senayan",M118:"Pondok Indah Mall 3",M124:"Pacific Place",M127:"Lotte Avenue",M217:"Blok M Plaza",M227:"Aeon Tanjung Barat",M238:"Pondok Indah Mall 2",M255:"Antasari Place",M264:"Plaza Semanggi"};
 const MONTHS=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 type Row=unknown[];type Lob="iPhone"|"Mac"|"iPad"|"Apple Watch";type Bucket={amount:number;qty:number};
 const LOBS:Lob[]=["iPhone","Mac","iPad","Apple Watch"];
