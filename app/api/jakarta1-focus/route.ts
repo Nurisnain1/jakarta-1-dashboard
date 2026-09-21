@@ -2,7 +2,7 @@ import {NextRequest,NextResponse} from "next/server";
 import {getSheetRanges} from "@/lib/google-sheets";
 
 const SALES_2026="151Qfrz3RZnDMgZjKOPt5s_aS-zscSiOTCWodbUDWM1k";
-const STORE_CODES=["M117","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
+const STORE_CODES=["M132","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
 type Row=unknown[];
 type Focus={iphone17promax:number;iphone17pro:number;iphone17:number;iphone15:number;iphone16:number;iphoneAir:number;macbookAirM5:number;macbookNeo:number;ipad11:number;awSe3:number};
 let cache=new Map<string,{at:number,data:unknown}>();
