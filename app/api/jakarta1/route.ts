@@ -3,9 +3,9 @@ import {ensureSheet,getSheetRanges} from "@/lib/google-sheets";
 
 const SALES_2026="151Qfrz3RZnDMgZjKOPt5s_aS-zscSiOTCWodbUDWM1k";
 const OPS="1BjLDXdi_5BgZCUUJAKba-xYRFf0RDmRTT0FW1be03WE";
-const STORE_CODES=["M117","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
+const STORE_CODES=["M132","M118","M124","M127","M217","M227","M238","M255","M264"] as const;
 const STORE_NAMES:Record<string,string>={
- M117:"DIGIMAP PLAZA SENAYAN",M118:"Digimap Pondok Indah Mall 3",M124:"DIGIMAP PACIFICPLACE",M127:"DIGIMAP APP Lotte Avenue",M217:"DIGIMAP BLOK - M PLAZA",M227:"Digimap Aeon Tanjung Barat",M238:"Digimap AAR Pondok Indah Mall 2",M255:"Digimap Antasari Place",M264:"Digimap Plaza Semanggi"
+ M132:"DIGIMAP PLAZA SENAYAN",M118:"Digimap Pondok Indah Mall 3",M124:"DIGIMAP PACIFICPLACE",M127:"DIGIMAP APP Lotte Avenue",M217:"DIGIMAP BLOK - M PLAZA",M227:"Digimap Aeon Tanjung Barat",M238:"Digimap AAR Pondok Indah Mall 2",M255:"Digimap Antasari Place",M264:"Digimap Plaza Semanggi"
 };
 const MONTHS=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 const PROMO_HEADERS=["Active","Title","Description","Period","Scope","Updated At"];
