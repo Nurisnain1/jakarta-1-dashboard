@@ -4,6 +4,8 @@ import {createPortal} from "react-dom";
 type L="iPhone"|"Mac"|"iPad"|"Apple Watch"; type M={qty:number;value:number}; type R={date:string;week:string;store:string;lob:L;qty:number;value:number}; type P={rows:R[];weeks:string[];error?:string};
 const LS:L[]=["iPhone","Mac","iPad","Apple Watch"],SS=["M132","M118","M124","M127","M217","M227","M238","M255","M264"],MS=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 const displayStoreCode=(s:string)=>s==="M117"?"M132":s;
+// Display-only alias: the first Jakarta 1 store row is M132. Source sales rows may still arrive as legacy M117.
+const sourceStoreCode=(s:string)=>s==="M132"?"M117":s;
 const nf=new Intl.NumberFormat("id-ID"),rp=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}),th="whitespace-nowrap px-3 py-3 text-[11px] font-black uppercase text-slate-400";
 const blank=():Record<L,M>=>({iPhone:{qty:0,value:0},Mac:{qty:0,value:0},iPad:{qty:0,value:0},"Apple Watch":{qty:0,value:0}}),sum=(x:Record<L,M>)=>LS.reduce((a,l)=>({qty:a.qty+x[l].qty,value:a.value+x[l].value}),{qty:0,value:0});
 function add(x:Record<L,M>,r:R){x[r.lob].qty+=Number(r.qty)||0;x[r.lob].value+=Number(r.value)||0} function merge(a:Record<L,M>,b:Record<L,M>){for(const l of LS){a[l].qty+=b[l].qty;a[l].value+=b[l].value}}
