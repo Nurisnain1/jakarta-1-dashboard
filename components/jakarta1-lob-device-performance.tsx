@@ -2,7 +2,7 @@
 import {useEffect,useMemo,useState} from "react";
 import {createPortal} from "react-dom";
 type L="iPhone"|"Mac"|"iPad"|"Apple Watch"; type M={qty:number;value:number}; type R={date:string;week:string;store:string;lob:L;qty:number;value:number}; type P={rows:R[];weeks:string[];error?:string};
-const LS:L[]=["iPhone","Mac","iPad","Apple Watch"],SS=["M117","M118","M124","M127","M217","M227","M238","M255","M264"],MS=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const LS:L[]=["iPhone","Mac","iPad","Apple Watch"],SS=["M132","M118","M124","M127","M217","M227","M238","M255","M264"],MS=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 const nf=new Intl.NumberFormat("id-ID"),rp=new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}),th="whitespace-nowrap px-3 py-3 text-[11px] font-black uppercase text-slate-400";
 const blank=():Record<L,M>=>({iPhone:{qty:0,value:0},Mac:{qty:0,value:0},iPad:{qty:0,value:0},"Apple Watch":{qty:0,value:0}}),sum=(x:Record<L,M>)=>LS.reduce((a,l)=>({qty:a.qty+x[l].qty,value:a.value+x[l].value}),{qty:0,value:0});
 function add(x:Record<L,M>,r:R){x[r.lob].qty+=Number(r.qty)||0;x[r.lob].value+=Number(r.value)||0} function merge(a:Record<L,M>,b:Record<L,M>){for(const l of LS){a[l].qty+=b[l].qty;a[l].value+=b[l].value}}
@@ -13,9 +13,9 @@ export default function Jakarta1LobDevicePerformance(){
  useEffect(()=>{setMonthStart(`${monthYear}-01-01`);setMonthEnd(`${monthYear}-12-31`);if(monthYear===year){setMonthRows(rows);return}let ok=true;setMonthBusy(true);fetch(`/api/jakarta1-lob-device?year=${monthYear}`,{cache:"no-store"}).then(async r=>{const j:P=await r.json();if(!r.ok)throw Error(j.error||"Gagal memuat data bulanan");if(ok)setMonthRows(j.rows||[])}).catch(e=>ok&&setError(e.message)).finally(()=>ok&&setMonthBusy(false));return()=>{ok=false}},[monthYear]);
  useEffect(()=>{if(monthYear===year)setMonthRows(rows)},[rows,year,monthYear]);
  const filtered=useMemo(()=>rows.filter(r=>r.date>=start&&r.date<=end),[rows,start,end]);
- const area=useMemo(()=>{const m=new Map<string,Record<L,M>>(SS.map(s=>[s,blank()]));filtered.forEach(r=>{const x=m.get(r.store);if(x)add(x,r)});return m},[filtered]);
+ const area=useMemo(()=>{const m=new Map<string,Record<L,M>>(SS.map(s=>[s,blank()]));filtered.forEach(r=>{const displayStore=r.store==="M117"?"M132":r.store;const x=m.get(displayStore);if(x)add(x,r)});return m},[filtered]);
  const areaTotal=useMemo(()=>{const x=blank();area.forEach(v=>merge(x,v));return x},[area]);
- const month=useMemo(()=>{const a=Array.from({length:12},blank);monthRows.forEach(r=>{if(r.date<monthStart||r.date>monthEnd)return;if(store!=="ALL"&&r.store!==store)return;const i=Number(r.date.slice(5,7))-1;if(i>=0&&i<12)add(a[i],r)});return a},[monthRows,monthStart,monthEnd,store]);
+ const month=useMemo(()=>{const a=Array.from({length:12},blank);monthRows.forEach(r=>{if(r.date<monthStart||r.date>monthEnd)return;const displayStore=r.store==="M117"?"M132":r.store;if(store!=="ALL"&&displayStore!==store)return;const i=Number(r.date.slice(5,7))-1;if(i>=0&&i<12)add(a[i],r)});return a},[monthRows,monthStart,monthEnd,store]);
  const monthTotal=useMemo(()=>{const x=blank();month.forEach(v=>merge(x,v));return x},[month]);
  const visibleMonths=useMemo(()=>MS.map((m,i)=>({m,i})).filter(({i})=>{const first=`${monthYear}-${String(i+1).padStart(2,"0")}-01`,last=`${monthYear}-${String(i+1).padStart(2,"0")}-31`;return last>=monthStart&&first<=monthEnd}),[monthYear,monthStart,monthEnd]);
  const cells=(x:Record<L,M>,k:string)=>LS.flatMap(l=>[<td key={k+l+"u"} className="whitespace-nowrap border-l px-3 py-3 text-right text-sm">{nf.format(x[l].qty)}</td>,<td key={k+l+"v"} className="whitespace-nowrap px-3 py-3 text-right text-sm">{rp.format(x[l].value)}</td>]);
